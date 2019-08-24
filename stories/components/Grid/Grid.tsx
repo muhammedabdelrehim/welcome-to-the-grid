@@ -1,47 +1,84 @@
 import React, { useState } from 'react'
 import { GridContainer, GridColumn, GridData } from '../../styles/Grid_styles'
 
+type Cell = {
+  rowIndex: number
+  colIndex: number
+  count: number
+}
+
+let Cells: Array<Cell> = []
+
 type Props = {
-  cells: Number
+  cellCount: number
 }
 
-const createGridData = (cells, i, j) => {
-  const index = i * cells + j + 1
+const createColumns = (cellCount: number, colIndex: number) => {
+  // count is var, en setCount is de event.
   const [count, setCount] = useState(0)
-  return (
-    <GridData key={index.toString()} onClick={() => setCount(count + 1)}>
-      {/* {count} */}
-      {index}
-    </GridData>
-  )
+  const children = []
+
+  const incrementCellsValue = (rowIndex: number, colIndex: number) => {
+    setCount(count + 1)
+    Cells.forEach(c => {
+      if (c.rowIndex === rowIndex && c.colIndex === colIndex) c.count++
+      if (c.rowIndex === rowIndex && c.colIndex !== colIndex) c.count++
+      if (c.rowIndex !== rowIndex && c.colIndex === colIndex) c.count++
+    })
+
+    console.log(Cells)
+  }
+
+  for (let rowIndex = 0; rowIndex < cellCount; rowIndex++) {
+    var cell = {
+      rowIndex,
+      colIndex,
+      count: 0
+    }
+    if (
+      Cells.find(c => c.colIndex === colIndex && rowIndex == rowIndex) ===
+      undefined
+    ) {
+      Cells.push(cell)
+    }
+
+    const index = colIndex * cellCount + rowIndex
+    var key = index.toString()
+
+    children.push(
+      <GridData
+        key={key}
+        onClick={() => incrementCellsValue(rowIndex, colIndex)}
+      >
+        {key}
+        <br />
+        {count}
+      </GridData>
+    )
+  }
+
+  return children
 }
 
-const createTable = ({ cells }: Props) => {
-  let table = []
+const createTable = ({ cellCount }: Props) => {
+  const table = []
 
-  // Outer loop to create parent
-  for (let i = 0; i < cells; i++) {
-    let children = []
-    //Inner loop to create children
-    for (let j = 0; j < cells; j++) {
-      children.push(createGridData(cells, i, j))
-    }
-    //Create the parent and add the children
-    table.push(<GridColumn>{children}</GridColumn>)
+  for (let colIndex = 0; colIndex < cellCount; colIndex++) {
+    table.push(<GridColumn>{createColumns(cellCount, colIndex)}</GridColumn>)
   }
   return table
 }
 
-const Grid = ({ cells }: Props) => {
+const Grid = ({ cellCount }: Props) => {
   return (
     <>
-      <GridContainer>{createTable({ cells })}</GridContainer>
+      <GridContainer>{createTable({ cellCount })}</GridContainer>
     </>
   )
 }
 
 Grid.defaultProps = {
-  cells: 50
+  cellCount: 50
 }
 
 export { Grid }
