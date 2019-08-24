@@ -14,7 +14,6 @@ type Props = {
 }
 
 const createColumns = (cellCount: number, colIndex: number) => {
-  // count is var, en setCount is de event.
   const [count, setCount] = useState(0)
   const children = []
 
@@ -36,7 +35,7 @@ const createColumns = (cellCount: number, colIndex: number) => {
       count: 0
     }
     if (
-      Cells.find(c => c.colIndex === colIndex && rowIndex == rowIndex) ===
+      Cells.find(c => c.colIndex === colIndex && c.rowIndex === rowIndex) ===
       undefined
     ) {
       Cells.push(cell)
@@ -44,14 +43,11 @@ const createColumns = (cellCount: number, colIndex: number) => {
 
     const index = colIndex * cellCount + rowIndex
     var key = index.toString()
-
     children.push(
       <GridData
         key={key}
         onClick={() => incrementCellsValue(rowIndex, colIndex)}
       >
-        {key}
-        <br />
         {count}
       </GridData>
     )
@@ -60,25 +56,22 @@ const createColumns = (cellCount: number, colIndex: number) => {
   return children
 }
 
-const createTable = ({ cellCount }: Props) => {
+const CreateTable = ({ cellCount }: Props) => {
+  //loop through cells om dingen te displayen
   const table = []
 
   for (let colIndex = 0; colIndex < cellCount; colIndex++) {
     table.push(<GridColumn>{createColumns(cellCount, colIndex)}</GridColumn>)
   }
-  return table
-}
-
-const Grid = ({ cellCount }: Props) => {
   return (
     <>
-      <GridContainer>{createTable({ cellCount })}</GridContainer>
+      <GridContainer>{table}</GridContainer>
     </>
   )
 }
 
-Grid.defaultProps = {
+CreateTable.defaultProps = {
   cellCount: 50
 }
 
-export { Grid }
+export { CreateTable }
