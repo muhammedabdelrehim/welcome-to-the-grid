@@ -9,12 +9,19 @@ export const GridContainer = styled.div`
 export const GridColumn = styled.div``
 export const GridData = styled.a`
   display: block;
+  font-family: ${theme.fontFamily};
   text-align: center;
-  padding: 5px;
-  border: 1px solid #dddddd;
+  line-height: ${theme.gutters.large};
+  align-items: center;
+  height: ${theme.gutters.large};
+  width: ${theme.gutters.large};
+  border: 1px solid ${theme.identityColors.border};
 
   ${desktopUp} {
-    padding: 10px;
+    line-height: ${theme.gutters.extraLarge};
+
+    height: ${theme.gutters.extraLarge};
+    width: ${theme.gutters.extraLarge};
   }
 
   &:hover {

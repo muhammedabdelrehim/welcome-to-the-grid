@@ -1,5 +1,6 @@
-import React, { useState, cloneElement } from 'react'
+import React, { useState } from 'react'
 import { GridContainer, GridColumn, GridData } from '../../styles/Grid_styles'
+import { theme } from '../../styles/ThemeProvider'
 
 type Props = {
   cellCount: number
@@ -14,7 +15,7 @@ type Cell = {
   count: number
 }
 
-const getCellsArray = cellCount => {
+const getCellsArray = (cellCount: number) => {
   var cells: Array<Cell> = []
   var id = 0
   for (let colIndex = 0; colIndex < cellCount; colIndex++) {
@@ -67,9 +68,9 @@ const CreateTable = ({ cellCount }: Props) => {
       if (c.rowIndex === cell.rowIndex || c.colIndex === cell.colIndex) {
         var element = document.getElementById(c.id.toString())
 
-        element.style.background = 'yellow'
+        element.style.background = theme.identityColors.yellow
         setTimeout(function() {
-          element.style.background = 'white'
+          element.style.background = theme.identityColors.white
         }, 1000)
       }
     })
@@ -96,7 +97,7 @@ const CreateTable = ({ cellCount }: Props) => {
           key={cell.id}
           onClick={() => incrementCellsValue(cell)}
         >
-          {cell.count}
+          {cell.count === 0 ? '' : cell.count}
         </GridData>
       )
     })
