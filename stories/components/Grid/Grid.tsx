@@ -14,7 +14,7 @@ type Props = {
 }
 
 const createColumns = (cellCount: number, colIndex: number) => {
-  const [count, setCount] = useState(0)
+  let [count, setCount] = useState(0)
   const children = []
 
   const incrementCellsValue = (rowIndex: number, colIndex: number) => {
@@ -32,7 +32,7 @@ const createColumns = (cellCount: number, colIndex: number) => {
     var cell = {
       rowIndex,
       colIndex,
-      count: 0
+      count
     }
     if (
       Cells.find(c => c.colIndex === colIndex && c.rowIndex === rowIndex) ===
@@ -52,22 +52,16 @@ const createColumns = (cellCount: number, colIndex: number) => {
       </GridData>
     )
   }
-
   return children
 }
 
 const CreateTable = ({ cellCount }: Props) => {
-  //loop through cells om dingen te displayen
   const table = []
 
   for (let colIndex = 0; colIndex < cellCount; colIndex++) {
     table.push(<GridColumn>{createColumns(cellCount, colIndex)}</GridColumn>)
   }
-  return (
-    <>
-      <GridContainer>{table}</GridContainer>
-    </>
-  )
+  return <GridContainer>{table}</GridContainer>
 }
 
 CreateTable.defaultProps = {
