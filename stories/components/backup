@@ -46,12 +46,12 @@ const getCellsArray = (cellCount: number) => {
 // let [cells, setCells] = useState(getCellsArray(10))
 
 const CreateTable = ({ cellCount }: Props) => {
-  let [cells, setCells] = useState(getCellsArray(cellCount))
-
   console.log('create Table')
 
+  let [cells, setCells] = useState(getCellsArray(10))
+
   const createColumns = (colIndex: number) => {
-    console.log('create Columns')
+    console.log('create Column')
     const incrementCellsValue = (rowIndex: number, colIndex: number) => {
       cells.forEach(c => {
         if (c.rowIndex === rowIndex || c.colIndex === colIndex) c.count++
@@ -64,6 +64,7 @@ const CreateTable = ({ cellCount }: Props) => {
     var cellInCol = cells.filter(cell => cell.colIndex === colIndex)
 
     const gridData = []
+
     cellInCol.forEach(cell => {
       const index = cell.colIndex + cell.rowIndex
       var key = index.toString()
