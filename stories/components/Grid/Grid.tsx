@@ -3,25 +3,21 @@ import { GridContainer, GridColumn, GridData } from '../../styles/Grid_styles'
 import { theme } from '../../styles/ThemeProvider'
 
 type Props = {
-  cellCount: number
-  colIndex?: number
-  rowIndex?: number
-}
-
-type Cell = {
   id: number
+  cellCount: number
   rowIndex: number
   colIndex: number
   count: number
 }
 
 const getCellsArray = (cellCount: number) => {
-  var cells: Array<Cell> = []
+  var cells: Array<Props> = []
   var id = 0
   for (let colIndex = 0; colIndex < cellCount; colIndex++) {
     for (let rowIndex = 0; rowIndex < cellCount; rowIndex++) {
       var cell = {
         id,
+        cellCount,
         rowIndex,
         colIndex,
         count: 0
@@ -33,19 +29,17 @@ const getCellsArray = (cellCount: number) => {
   return cells
 }
 
-const GenerateFibonacciSerie = (n: number) => {
-  if (n === 1) {
+const GenerateFibonacciSerie = (number: number) => {
+  if (number === 1) {
     return [0, 1]
   } else {
-    var s: Array<number> = GenerateFibonacciSerie(n - 1)
-    s.push(s[s.length - 1] + s[s.length - 2])
-    return s
+    var serie: Array<number> = GenerateFibonacciSerie(number - 1)
+    serie.push(serie[serie.length - 1] + serie[serie.length - 2])
+    return serie
   }
 }
 
 let fibonacciSerie = GenerateFibonacciSerie(50)
-
-console.log(fibonacciSerie)
 
 const CreateTable = ({ cellCount }: Props) => {
   const [cells, setCells] = useState(getCellsArray(cellCount))
@@ -62,8 +56,9 @@ const CreateTable = ({ cellCount }: Props) => {
     //   }
     // })
   }
+  console.log(fibonacciSerie)
 
-  const backgroundColor = (cell: Cell) => {
+  const backgroundColor = (cell: Props) => {
     cells.forEach(c => {
       if (c.rowIndex === cell.rowIndex || c.colIndex === cell.colIndex) {
         var element = document.getElementById(c.id.toString())
@@ -76,8 +71,8 @@ const CreateTable = ({ cellCount }: Props) => {
     })
   }
 
-  const createColumns = colIndex => {
-    const incrementCellsValue = (cell: Cell) => {
+  const createColumns = (colIndex: number) => {
+    const incrementCellsValue = (cell: Props) => {
       cells.forEach(c => {
         if (c.rowIndex === cell.rowIndex || c.colIndex === colIndex) {
           c.count++
