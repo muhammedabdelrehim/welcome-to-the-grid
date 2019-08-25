@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, cloneElement } from 'react'
 import { GridContainer, GridColumn, GridData } from '../../styles/Grid_styles'
 
 type Props = {
@@ -8,71 +8,93 @@ type Props = {
 }
 
 type Cell = {
+  id: number
   rowIndex: number
   colIndex: number
   count: number
 }
 
-const getCellsArray = (cellCount: number) => {
+const getCellsArray = cellCount => {
   var cells: Array<Cell> = []
+  var id = 0
   for (let colIndex = 0; colIndex < cellCount; colIndex++) {
     for (let rowIndex = 0; rowIndex < cellCount; rowIndex++) {
       var cell = {
+        id,
         rowIndex,
         colIndex,
         count: 0
       }
       cells.push(cell)
+      id++
     }
   }
   return cells
 }
 
-// let Cells: Array<Cell> =
+const GenerateFibonacciSerie = (n: number) => {
+  if (n === 1) {
+    return [0, 1]
+  } else {
+    var s: Array<number> = GenerateFibonacciSerie(n - 1)
+    s.push(s[s.length - 1] + s[s.length - 2])
+    return s
+  }
+}
 
-// var timer
-// var miliseconds = 500
+let fibonacciSerie = GenerateFibonacciSerie(50)
 
-// const toggleColors = colors => {
-//   clearTimeout(timer)
-//   var change = () => {
-//     document.bgColor = colors // Change the color
-//     if (colors.length > 1) timer = setTimeout(change, miliseconds) // Call the changer
-//   }
-
-//   change()
-// }
-
-// let [cells, setCells] = useState(getCellsArray(10))
+console.log(fibonacciSerie)
 
 const CreateTable = ({ cellCount }: Props) => {
   const [cells, setCells] = useState(getCellsArray(cellCount))
 
-  console.log('create Table')
+  const fibonacciRangeCompare = () => {
+    for (let rowIndex = 0; rowIndex < cellCount - 5; rowIndex++) {}
 
-  const createColumns = (colIndex: number) => {
-    console.log('create Columns')
-    const incrementCellsValue = (rowIndex: number, colIndex: number) => {
+    for (let colIndex = 0; colIndex < cellCount - 5; colIndex++) {}
+
+    // cells.forEach(c => {
+    //   if (fibonacciSerie.includes(c.count)) {
+    //     var firstIndexMatch = fibonacciSerie.indexOf(c.count)
+    //     var secondIndexMatch = fibonacciSerie.lastIndexOf(c.count)
+    //   }
+    // })
+  }
+
+  const backgroundColor = (cell: Cell) => {
+    cells.forEach(c => {
+      if (c.rowIndex === cell.rowIndex || c.colIndex === cell.colIndex) {
+        var element = document.getElementById(c.id.toString())
+
+        element.style.background = 'yellow'
+        setTimeout(function() {
+          element.style.background = 'white'
+        }, 1000)
+      }
+    })
+  }
+
+  const createColumns = colIndex => {
+    const incrementCellsValue = (cell: Cell) => {
       cells.forEach(c => {
-        if (c.rowIndex === rowIndex || c.colIndex === colIndex) c.count++
+        if (c.rowIndex === cell.rowIndex || c.colIndex === colIndex) {
+          c.count++
+          backgroundColor(cell)
+        }
       })
-
-      console.log(cells)
       setCells([...cells])
     }
 
     var cellInCol = cells.filter(cell => cell.colIndex === colIndex)
 
     const gridData = []
-
-    console.log(cellInCol)
-    cellInCol.map(cell => {
-      const index = cell.colIndex + cell.rowIndex
-      var key = index.toString()
+    cellInCol.map((cell, index) => {
       gridData.push(
         <GridData
-          key={key}
-          onClick={() => incrementCellsValue(cell.rowIndex, cell.colIndex)}
+          id={cell.id}
+          key={cell.id}
+          onClick={() => incrementCellsValue(cell)}
         >
           {cell.count}
         </GridData>
@@ -83,14 +105,16 @@ const CreateTable = ({ cellCount }: Props) => {
 
   const table = []
   for (let colIndex = 0; colIndex < cellCount; colIndex++) {
-    table.push(<GridColumn>{createColumns(colIndex)}</GridColumn>)
+    table.push(
+      <GridColumn key={colIndex}>{createColumns(colIndex)}</GridColumn>
+    )
   }
 
   return <GridContainer>{table}</GridContainer>
 }
 
 CreateTable.defaultProps = {
-  cellCount: 10
+  cellCount: 50
 }
 
 export { CreateTable }
