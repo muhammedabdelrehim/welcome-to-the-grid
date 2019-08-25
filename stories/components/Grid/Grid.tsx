@@ -46,7 +46,7 @@ const getCellsArray = (cellCount: number) => {
 // let [cells, setCells] = useState(getCellsArray(10))
 
 const CreateTable = ({ cellCount }: Props) => {
-  let [cells, setCells] = useState(getCellsArray(cellCount))
+  const [cells, setCells] = useState(getCellsArray(cellCount))
 
   console.log('create Table')
 
@@ -58,13 +58,15 @@ const CreateTable = ({ cellCount }: Props) => {
       })
 
       console.log(cells)
-      setCells(cells)
+      setCells([...cells])
     }
 
     var cellInCol = cells.filter(cell => cell.colIndex === colIndex)
 
     const gridData = []
-    cellInCol.forEach(cell => {
+
+    console.log(cellInCol)
+    cellInCol.map(cell => {
       const index = cell.colIndex + cell.rowIndex
       var key = index.toString()
       gridData.push(
