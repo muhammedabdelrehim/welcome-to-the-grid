@@ -3,39 +3,14 @@ const defaultTheme = {
   fontFamily: '"Open Sans", Calibri, Helvetica, Tahoma, sans-serif',
 
   fontSizes: {
-    paragraph: '12px',
-
-    headerOne: '22px',
-    headerTwo: '18px',
-    headerThree: '16px',
-    headerFour: '14px',
-
-    headerMobile: {
-      headerOne: '18px',
-      headerTwo: '16px',
-      headerThree: '14px',
-      headerFour: '12px'
-    }
-  },
-
-  fontWeights: {
-    normal: 300,
-    bold: 600
-  },
-
-  fontColor: {
-    one: '#333333',
-    two: '#ffffff',
-    three: '#555555',
-    four: '#aaaaaa'
+    paragraph: '12px'
   },
 
   identityColors: {
-    one: '#77cc6d',
-    two: '#2ac4ea',
-    three: '#f6653c',
-    four: '#dddddd',
-    five: '#eeeeee'
+    yellow: 'yellow',
+    white: 'white',
+    red: 'red',
+    border: '#dddddd'
   },
 
   gutters: {
@@ -43,7 +18,7 @@ const defaultTheme = {
     small: '10px',
     medium: '15px',
     large: '20px',
-    extraLarge: '25px'
+    extraLarge: '30px'
   }
 }
 
